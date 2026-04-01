@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>최애 앨범 소개</title>
+ 
+    <style>
+        /* 여기서부터 자유롭게 코딩을 시작하세요! */
+        /* (강사님이 주신 필수 색상 2개 잊지 마세요!) */
+ 
+        * {
+            margin: 0;
+            padding: 0;
+            /* 테두리 두께를 크기에 포함시키는 마법의 속성 (나중에 배웁니다!) */
+            box-sizing: border-box;
+        }
+ 
+        body {
+            /* 0. 배경: 빈티지 노트 느낌 */
+            color: #4b3621;
+            font-family: serif;
+            padding: 40px 20px 60px 110px;
+            min-height: 100vh;
+            background-color: #e8dcc0;
+            background-image:
+                linear-gradient(
+                    to right,
+                    #d4c49a 0px, #d4c49a 72px,
+                    #b87060 72px, #b87060 74px,
+                    transparent 74px
+                ),
+                repeating-linear-gradient(
+                    to bottom,
+                    transparent 0px,
+                    transparent 31px,
+                    #c4a97a 31px,
+                    #c4a97a 32px
+                );
+            background-size: 100% 32px;
+        }
+ 
+        /* 낡은 가죽 바인딩 */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0;
+            width: 74px;
+            height: 100%;
+            background-color: #c8a870;
+            background-image:
+                repeating-linear-gradient(
+                    to right,
+                    transparent 0px,
+                    transparent 6px,
+                    rgba(0,0,0,0.04) 6px,
+                    rgba(0,0,0,0.04) 7px
+                ),
+                repeating-linear-gradient(
+                    to bottom,
+                    transparent 0px,
+                    transparent 18px,
+                    rgba(80,50,20,0.5) 18px,
+                    rgba(80,50,20,0.5) 20px,
+                    rgba(60,35,10,0.6) 20px,
+                    rgba(60,35,10,0.6) 38px,
+                    rgba(80,50,20,0.5) 38px,
+                    rgba(80,50,20,0.5) 40px,
+                    transparent 40px,
+                    transparent 52px
+                );
+            background-position: 0 0, 32px 12px;
+            background-size: 7px 100%, 16px 52px;
+            background-repeat: repeat-x repeat-y, repeat-y;
+            border-right: 2px solid #a07840;
+            box-shadow: inset -4px 0 8px rgba(0,0,0,0.12);
+            z-index: 0;
+            pointer-events: none;
+        }
+ 
+        /* 빈티지 비네팅 */
+        body::after {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: radial-gradient(ellipse at center, transparent 55%, rgba(80,50,20,0.22) 100%);
+            pointer-events: none;
+            z-index: 0;
+        }
+ 
+        body > * {
+            position: relative;
+            z-index: 1;
+        }
+ 
+ 
+        /* 1. 타이포그래피 */
+ 
+        #album-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+ 
+        .artist-name {
+            font-size: 13px;
+            letter-spacing: 0.2em;
+            color: #c0c0c0;             /* 🩶 실버 */
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+ 
+        h1 {
+            font-size: 34px;
+            color: #ffd700;             /* 💛 골드 */
+            margin-bottom: 10px;
+            text-shadow: 1px 1px 0px #b8960c;
+        }
+ 
+        .subtitle {
+            font-size: 13px;
+            color: #9a856e;
+            font-style: italic;
+        }
+ 
+        h2 {
+            font-size: 17px;
+            color: #4b3621;
+            margin-bottom: 14px;
+            padding-bottom: 6px;
+            border-bottom: 1px solid #d3c5b5;
+        }
+ 
+        section {
+            max-width: 680px;
+            margin: 0 auto 36px auto;
+        }
+ 
+ 
+        /* 2. 가사 영역: 찢어진 종이 조각 느낌 */
+ 
+        .lyrics-box {
+            background-color: #ffffff;          /* 하얀 종이 */
+            padding: 20px;
+            margin: 20px 0;
+ 
+            /* [포인트 1] 테두리를 울퉁불퉁하게 (기초 단계의 팁) */
+            border: 1px solid #dcdcdc;
+            border-radius: 2px;                 /* 아주 살짝만 곡선 */
+ 
+            /* [포인트 2] 그림자를 넣어서 종이가 놓인 느낌 주기 */
+            box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.1);
+ 
+            /* [포인트 3] 찢어진 느낌을 주는 테두리 스타일 */
+            border-top: 3px dashed #bcaaa4;     /* 윗부분만 점선으로 해서 뜯어낸 느낌 */
+ 
+            line-height: 2;
+            font-size: 14px;
+            color: #4b3621;
+        }
+ 
+        .highlight {
+            background-color: #eee8aa;          /* 연한 노란색 형광펜 느낌 */
+            color: #000;
+            font-weight: bold;
+            padding: 1px 4px;
+        }
+ 
+ 
+        /* 3. 목록(#charm-list) 불릿 기호 지우고 예쁘게 꾸미기 */
+ 
+        #charm-list {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+ 
+        #charm-list li {
+            padding-left: 22px;
+            position: relative;
+            font-size: 14px;
+            color: #4b3621;
+            line-height: 1.7;
+        }
+ 
+        /* 홀수 li 앞에 골드 ✦ */
+        #charm-list li:nth-child(odd)::before {
+            content: "✦";
+            position: absolute;
+            left: 0;
+            top: 3px;
+            font-size: 10px;
+            color: #ffd700;             /* 💛 골드 */
+        }
+ 
+        /* 짝수 li 앞에 실버 ✦ */
+        #charm-list li:nth-child(even)::before {
+            content: "✦";
+            position: absolute;
+            left: 0;
+            top: 3px;
+            font-size: 10px;
+            color: #c0c0c0;             /* 🩶 실버 */
+        }
+ 
+ 
+        /* 4. 표(table): 깔끔하고 고풍스럽게 */
+ 
+        #track-table {
+            width: 100%;
+            border-collapse: collapse;          /* 선 겹치기 */
+            font-size: 14px;
+        }
+ 
+        #track-table th,
+        #track-table td {
+            padding: 10px;
+            border-bottom: 1px solid #d3c5b5;   /* 연한 갈색 구분선 */
+            text-align: left;
+        }
+ 
+        #track-table th {
+            color: #ffd700;                     /* 💛 골드 */
+            font-weight: normal;
+            letter-spacing: 0.08em;
+            background-color: #4b3621;          /* 진한 갈색 */
+        }
+ 
+        /* 짝수 줄 배경색 */
+        #track-table tbody tr:nth-child(even) {
+            background-color: rgba(255, 255, 255, 0.45);
+        }
+ 
+        #track-table tbody tr:hover {
+            background-color: rgba(255, 215, 0, 0.1);
+        }
+ 
+ 
+        /* 5. 버튼: 앤티크한 갈색 버튼 */
+ 
+        #album-footer {
+            text-align: center;
+            max-width: 680px;
+            margin: 0 auto;
+            padding-top: 10px;
+        }
+ 
+        .listen-btn {
+            background-color: #8d6e63;          /* 브라운 */
+            color: white;
+            border: none;
+            padding: 5px 15px;
+            border-radius: 3px;
+            cursor: pointer;
+            font-family: serif;
+            font-size: 14px;
+            letter-spacing: 0.08em;
+            transition: background-color 0.25s;
+        }
+ 
+        .listen-btn:hover {
+            background-color: #5d4037;          /* 마우스 올리면 더 진하게 */
+        }
+ 
+    </style>
+</head>
+<body>
+    <header id="album-header">
+        <p class="artist-name">명지전문대</p>
+        <h1>4조 등교길 믹스테잎 </h1>
+        <p class="subtitle">자신만의 플레이리스트</p>
+    </header>
+ 
+    <section class="lyrics-section">
+        <h2>🎵 킬링 파트 가사</h2>
+        <div class="lyrics-box">
+            <p>Billie Jean is not my lover-Billie Jean 가사</p>
+            <p>I'll work in even holidays, 뒤돌아보지 않을게-Vancouver 2 가사</p>
+            <p>아파했지만 또 아파도 되는 기억-사랑하게 될 거야 가사</p>
+        </div>
+    </section>
+ 
+    <section class="info-section">
+        <h2>✨ 입덕 포인트</h2>
+        <ul id="charm-list">
+            <li>귀에 쏙쏙 박히는 트렌디한 비트와 멜로디</li>
+            <li>특색있고 매력있는 노래들</li>
+            <li>멤버들의 취향이 반영된 곡들</li>
+        </ul>
+    </section>
+ 
+    <section class="track-section">
+        <h2>🎧 추천 플레이리스트</h2>
+        <table id="track-table">
+            <thead>
+                <tr>
+                    <th>Track</th>
+                    <th>곡명</th>
+                    <th>Play Time</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>01</td>
+                    <td>Billie Jean</td>
+                    <td>4:54</td>
+                </tr>
+                <tr>
+                    <td>02</td>
+                    <td>Vancouver 2</td>
+                    <td>4:06</td>
+                </tr>
+                <tr>
+                    <td>03</td>
+                    <td>사랑하게 될 거야</td>
+                    <td>2:47</td>
+                </tr>
+                <tr>
+                    <td>04</td>
+                    <td>O(Feat.이하이)</td>
+                    <td>3:33</td>
+                </tr>
+                <tr>
+                    <td>05</td>
+                    <td>Hype Boy</td>
+                    <td>3:07</td>
+                </tr>
+                <tr>
+                    <td>06</td>
+                    <td>Aqua man</td>
+                    <td>3:47</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+ 
+    <footer id="album-footer">
+        <button class="listen-btn">전곡 스밍하러 가기</button>
+    </footer>
+</body>
+</html>
